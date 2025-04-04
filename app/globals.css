@@ -1,5 +1,28 @@
 @import "tailwindcss";
+/* Define your font variables and styles */
+:root {
+  --font-syne: 'Syne', sans-serif;
+  --font-geist-sans: 'Geist', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
 
+/* Apply default font (optional) */
+body {
+  font-family: var(--font-geist-sans);
+}
+
+/* Create CSS classes for each font */
+.font-syne {
+  font-family: var(--font-syne);
+}
+
+.font-geist {
+  font-family: var(--font-geist-sans);
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono);
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -14,7 +37,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #000000;
     --foreground: #ededed;
   }
 }
@@ -23,4 +46,32 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-120px * 5 - 4rem * 5));
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+/* In your globals.css */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }
