@@ -1,12 +1,89 @@
-import React from "react";
+"use client"
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GoArrowUpRight } from "react-icons/go";
+import { motion, useAnimation, useInView } from "framer-motion";
 
 export default function AgendaList() {
+  // References and controls for scroll animations
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: false, amount: 0.2 });
+  const mainControls = useAnimation();
+  
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        duration: 0.8, 
+        staggerChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+  
+  const buttonVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        duration: 0.5, 
+        delay: 0.6,
+        ease: "easeOut" 
+      }
+    },
+    hover: { 
+      scale: 1.05,
+      transition: { duration: 0.2 }
+    }
+  };
+  
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+    visible: { 
+      opacity: 0.8, 
+      scale: [0.8, 1.1, 1],
+      rotate: 0,
+      transition: { 
+        duration: 1.2, 
+        delay: 0.8,
+        ease: "easeOut" 
+      }
+    }
+  };
+
+  // Trigger animations whenever component comes into view
+  useEffect(() => {
+    if (isInView) {
+      mainControls.start("visible");
+    } else {
+      mainControls.start("hidden");
+    }
+  }, [isInView, mainControls]);
+
   return (
-    <div className="bg-[#121212] text-white py-8 md:py-37 px-6 md:px-19 max-w-4xl md:max-w-6xl mx-auto rounded-[50px] font-syne relative overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 md:mb-8">
+    <motion.div 
+      ref={containerRef}
+      className="bg-[#121212] text-white py-8 md:py-37 px-6 md:px-19 max-w-4xl md:max-w-6xl mx-auto rounded-[50px] font-syne relative overflow-hidden"
+      variants={containerVariants}
+      initial="hidden"
+      animate={mainControls}
+    >
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 md:mb-8"
+        variants={itemVariants}
+      >
         <div className="md:col-span-1">
           <h3 className="font-syne font-bold text-3xl md:text-[40px] leading-none tracking-normal">
             Day 1
@@ -25,9 +102,12 @@ export default function AgendaList() {
             investor insights highlight AI's business potential.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 md:mb-8">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 md:mb-8"
+        variants={itemVariants}
+      >
         <div className="md:col-span-1">
           <h3 className="font-syne font-bold text-3xl md:text-[40px] leading-none tracking-normal">
             Day 2
@@ -46,9 +126,12 @@ export default function AgendaList() {
             investor insights highlight AI's business potential.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:mb-12">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:mb-12"
+        variants={itemVariants}
+      >
         <div className="md:col-span-1">
           <h3 className="font-syne font-bold text-3xl md:text-[40px] leading-none tracking-normal">
             Day 3
@@ -67,20 +150,33 @@ export default function AgendaList() {
             visionary keynote and final networking sessions.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex justify-end mb-4 md:mb-6">
-        <Link
-          href="/detailed-schedule"
-          className="font-syne font-medium gap-3 md:gap-5 text-lg md:text-[25px] bg-gradient-to-r from-[#0147FF] via-[#0147FF] to-transparent leading-none tracking-normal py-3 px-6 md:py-5 md:px-35 flex items-center rounded-[100px]"
+        <motion.div
+          variants={buttonVariants}
+          whileHover="hover"
         >
-          View detailed schedule
-          <GoArrowUpRight />
-        </Link>
+          <Link
+            href="/detailed-schedule"
+            className="font-syne font-medium gap-3 md:gap-5 text-lg md:text-[25px] bg-gradient-to-r from-[#0147FF] via-[#0147FF] to-transparent leading-none tracking-normal py-3 px-6 md:py-5 md:px-35 flex items-center rounded-[100px]"
+          >
+            View detailed schedule
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+            >
+              <GoArrowUpRight />
+            </motion.div>
+          </Link>
+        </motion.div>
       </div>
 
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3">
-        <div className="w-full h-full">
+        <motion.div 
+          className="w-full h-full"
+          variants={imageVariants}
+        >
           <Image
             src="/Mark.svg"
             alt="Abstract AI shapes"
@@ -89,8 +185,8 @@ export default function AgendaList() {
             className="opacity-80 scale-125 md:scale-110 lg:scale-100"
             priority
           />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
