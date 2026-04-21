@@ -167,7 +167,7 @@ const RegistrationBanner: React.FC = () => {
             <Image
               src="/Vector (3).svg"
               alt="Blue starburst design"
-              layout="fill"
+              fill
               className="object-contain"
               priority
             />
