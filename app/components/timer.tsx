@@ -1,8 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, Variants } from "framer-motion";
 
 const RegistrationBanner: React.FC = () => {
   const targetDate = new Date("2025-04-30T00:00:00");
@@ -12,17 +11,20 @@ const RegistrationBanner: React.FC = () => {
     minutes: 0,
     seconds: 0,
   });
-  
-  const ref = React.useRef(null);
+
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
 
   useEffect(() => {
+    // Declare timer variable in the scope so updateTimer can see it
+    let timer: NodeJS.Timeout;
+
     const updateTimer = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
 
       if (difference <= 0) {
-        clearInterval(timer);
+        if (timer) clearInterval(timer);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         return;
       }
@@ -35,46 +37,54 @@ const RegistrationBanner: React.FC = () => {
       });
     };
 
+    // Initial call
     updateTimer();
-    const timer = setInterval(updateTimer, 1000);
-    return () => clearInterval(timer);
+
+    // Set the interval and assign it to our scoped variable
+    timer = setInterval(updateTimer, 1000);
+
+    // Cleanup on unmount
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, []);
 
-  const containerVariants = {
+  // Animation Variants
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
-  const timerVariants = {
+  const timerVariants: Variants = {
     hidden: { scale: 0.9, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
-      transition: { 
-        type: "spring", 
-        stiffness: 200, 
-        damping: 10 
-      }
-    }
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 10,
+      },
+    },
   };
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       className="flex flex-col w-full bg-black text-white overflow-x-hidden"
       initial="hidden"
@@ -83,13 +93,13 @@ const RegistrationBanner: React.FC = () => {
     >
       <div className="max-w-4xl md:max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-16 w-full">
         <div className="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-[15rem]">
-          <motion.h1 
+          <motion.h1
             variants={itemVariants}
             className="font-syne font-bold text-4xl md:text-6xl lg:text-[100px] leading-none tracking-normal"
           >
             REGISTER NOW
           </motion.h1>
-          <motion.p 
+          <motion.p
             variants={itemVariants}
             className="font-syne font-normal text-base md:text-lg lg:text-[20px] leading-[30px] tracking-normal max-w-md"
           >
@@ -98,13 +108,13 @@ const RegistrationBanner: React.FC = () => {
           </motion.p>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="bg-[#121212] rounded-[30px] md:rounded-[50px] relative overflow-hidden"
         >
           <div className="py-8 md:py-12 lg:py-24 px-6 md:px-12 lg:px-26 flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col w-full">
-              <motion.p 
+              <motion.p
                 variants={itemVariants}
                 className="font-syne font-normal text-base md:text-lg lg:text-[20px] leading-[30px] tracking-normal mb-4 md:mb-0"
               >
@@ -118,7 +128,7 @@ const RegistrationBanner: React.FC = () => {
                         :
                       </span>
                     )}
-                    <motion.div 
+                    <motion.div
                       variants={timerVariants}
                       className="flex flex-col items-center min-w-[60px] md:min-w-[100px]"
                     >
@@ -133,16 +143,19 @@ const RegistrationBanner: React.FC = () => {
                     </motion.div>
                   </React.Fragment>
                 ))}
-                <div className="hidden  items-center">
+                {/* Optional Seconds display - currently hidden via CSS as per your original code */}
+                <div className="hidden items-center">
                   <span className="font-syne font-normal text-6xl lg:text-[200px] leading-none tracking-normal mb-1">
                     :
                   </span>
-                  <motion.div 
+                  <motion.div
                     variants={timerVariants}
-                    className="flex flex-col items-center min-w-[100px] "
+                    className="flex flex-col items-center min-w-[100px]"
                   >
                     <span className="font-syne font-normal text-6xl lg:text-[200px] leading-none tracking-normal">
-                      {timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}
+                      {timeLeft.seconds < 10
+                        ? `0${timeLeft.seconds}`
+                        : timeLeft.seconds}
                     </span>
                     <span className="font-syne font-normal text-sm lg:text-[16px] leading-[30px] tracking-normal text-center">
                       SECONDS
@@ -153,15 +166,16 @@ const RegistrationBanner: React.FC = () => {
             </div>
           </div>
 
-          <motion.div 
+          {/* Animated Starburst Icon */}
+          <motion.div
             className="absolute bottom-0 right-0 w-[100px] h-[100px] md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px]"
-            animate={{ 
-              rotate: [0, 15, 0], 
+            animate={{
+              rotate: [0, 15, 0],
             }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 4, 
-              ease: "easeInOut" 
+            transition={{
+              repeat: Infinity,
+              duration: 4,
+              ease: "easeInOut",
             }}
           >
             <Image

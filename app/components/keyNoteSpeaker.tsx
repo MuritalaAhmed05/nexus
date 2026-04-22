@@ -1,15 +1,21 @@
-"use client"
-import React, { useRef, useEffect } from 'react';
-import { GoArrowUpRight } from 'react-icons/go';
-import Image from 'next/image';
-import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
+"use client";
+import React, { useRef, useEffect } from "react";
+import { GoArrowUpRight } from "react-icons/go";
+import Image from "next/image";
+import {
+  motion,
+  useAnimation,
+  useInView,
+  AnimatePresence,
+  Variants,
+} from "framer-motion";
 
 interface Speaker {
   id: number;
   name: string;
   role: string;
   image: string;
-  type: 'text' | 'image';
+  type: "text" | "image";
 }
 
 export default function KeyNoteSpeakers() {
@@ -19,57 +25,57 @@ export default function KeyNoteSpeakers() {
       name: "Dr. Emily Carter",
       role: "CTO at Quantum Digital",
       image: "/Image (4).svg",
-      type: 'text'
+      type: "text",
     },
     {
       id: 2,
       name: "Jane Smith",
       role: "CEO, InnovateTech",
       image: "/Image (4).svg",
-      type: 'image'
+      type: "image",
     },
     {
       id: 3,
       name: "Elon Park",
       role: "CTO, ElectrifyAI",
       image: "/Image (6).svg",
-      type: 'text'
+      type: "text",
     },
     {
       id: 4,
       name: "Michael Brown",
       role: "Director of AI Research",
       image: "/Image (5).svg",
-      type: 'image'
+      type: "image",
     },
     {
       id: 5,
       name: "Laura Kim",
       role: "AI Policy Advisor, EU Commission",
       image: "/Image (6).svg",
-      type: 'image'
+      type: "image",
     },
     {
       id: 6,
       name: "Laura Kim",
       role: "AI Policy Advisor, EU Commission",
       image: "/Image (5).svg",
-      type: 'text'
+      type: "text",
     },
     {
       id: 7,
       name: "Laura Kim",
       role: "AI Policy Advisor, EU Commission",
       image: "/Image (7).svg",
-      type: 'image'
+      type: "image",
     },
     {
       id: 8,
       name: "Dr. Alan Foster",
       role: "Stanford AI Lab",
       image: "/Image (6).svg",
-      type: 'text'
-    }
+      type: "text",
+    },
   ];
 
   // Set up refs and animation controls
@@ -78,46 +84,46 @@ export default function KeyNoteSpeakers() {
   const controls = useAnimation();
 
   // Animation variants
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.8,
-        ease: "easeOut" 
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
-  const gridVariants = {
+  const gridVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         duration: 0.5,
         staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
-  const buttonVariants = {
+  const buttonVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
-        delay: 0.8
-      }
+        delay: 0.8,
+      },
     },
     hover: {
       scale: 1.05,
       backgroundColor: "#FFFFFF",
       color: "#000000",
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
   // Trigger animations whenever component comes into view
@@ -130,13 +136,13 @@ export default function KeyNoteSpeakers() {
   }, [isInView, controls]);
 
   return (
-    <motion.div 
+    <motion.div
       ref={containerRef}
       className="bg-black text-white my-8 md:my-12 font-syne max-w-4xl md:max-w-6xl mx-auto px-4 md:px-0"
       initial="hidden"
       animate={controls}
     >
-      <motion.div 
+      <motion.div
         className="flex flex-col md:flex-row justify-between items-start mb-6 md:mb-10 gap-4 md:gap-0"
         variants={headerVariants}
       >
@@ -147,23 +153,20 @@ export default function KeyNoteSpeakers() {
           Meet the industry leaders shaping the future of AI.
         </p>
       </motion.div>
-     
-      <motion.div 
+
+      <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
         variants={gridVariants}
       >
         <AnimatePresence>
           {speakers.map((speaker) => (
-            <SpeakerCard
-              key={speaker.id}
-              speaker={speaker}
-            />
+            <SpeakerCard key={speaker.id} speaker={speaker} />
           ))}
         </AnimatePresence>
         <div className="hidden md:block"></div>
       </motion.div>
-     
-      <motion.div 
+
+      <motion.div
         className="mt-6 md:mt-8 flex justify-start"
         variants={buttonVariants}
         whileHover="hover"
@@ -172,7 +175,12 @@ export default function KeyNoteSpeakers() {
           View all speakers
           <motion.div
             animate={{ x: [0, 5, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
           >
             <GoArrowUpRight />
           </motion.div>
@@ -187,53 +195,53 @@ interface SpeakerCardProps {
 }
 
 function SpeakerCard({ speaker }: SpeakerCardProps) {
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
-        ease: "easeOut" 
-      }
+        ease: "easeOut",
+      },
     },
     hover: {
       y: -10,
-      transition: { 
+      transition: {
         duration: 0.3,
-        ease: "easeOut" 
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const textVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="bg-[#DEDEE0] rounded-[30px] md:rounded-[50px] overflow-hidden h-[452px] sm:h-[350px] md:h-[452px]"
       variants={cardVariants}
       whileHover="hover"
     >
-      {speaker.type === 'text' ? (
-        <motion.div 
+      {speaker.type === "text" ? (
+        <motion.div
           className="p-4 md:p-6 h-full flex flex-col justify-between py-6 md:py-13 px-4 md:px-10"
           variants={textVariants}
         >
@@ -249,7 +257,7 @@ function SpeakerCard({ speaker }: SpeakerCardProps) {
           </motion.div>
         </motion.div>
       ) : (
-        <motion.div 
+        <motion.div
           className="h-full w-full relative"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}

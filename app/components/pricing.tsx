@@ -1,7 +1,7 @@
-'use client';
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { GoArrowUpRight } from "react-icons/go";
-import { motion, useInView, useAnimation } from "framer-motion";
+import { motion, useInView, useAnimation, Variants } from "framer-motion";
 
 interface TicketCardProps {
   title: string;
@@ -10,7 +10,12 @@ interface TicketCardProps {
   delay?: number;
 }
 
-const TicketCard: React.FC<TicketCardProps> = ({ title, description, price, delay = 0 }) => {
+const TicketCard: React.FC<TicketCardProps> = ({
+  title,
+  description,
+  price,
+  delay = 0,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
@@ -22,7 +27,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ title, description, price, dela
     }
   }, [isInView, controls]);
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
@@ -30,9 +35,9 @@ const TicketCard: React.FC<TicketCardProps> = ({ title, description, price, dela
       transition: {
         duration: 0.5,
         delay: delay,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
@@ -79,7 +84,7 @@ const TicketOptions: React.FC = () => {
   return (
     <div className="bg-black min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <motion.h1 
+        <motion.h1
           className="font-syne font-bold text-[30px] md:text-[50px] leading-none tracking-normal capitalize mb-8 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -89,9 +94,24 @@ const TicketOptions: React.FC = () => {
           Ticket Options
         </motion.h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-4">
-          <TicketCard title="EARLY BIRD PASS" description="Limited time offer!" price="299" delay={0} />
-          <TicketCard title="STANDARD PASS" description="" price="399" delay={0.2} />
-          <TicketCard title="VIP EXPERIENCE" description="Includes exclusive speaker meetups & front-row seating" price="699" delay={0.4} />
+          <TicketCard
+            title="EARLY BIRD PASS"
+            description="Limited time offer!"
+            price="299"
+            delay={0}
+          />
+          <TicketCard
+            title="STANDARD PASS"
+            description=""
+            price="399"
+            delay={0.2}
+          />
+          <TicketCard
+            title="VIP EXPERIENCE"
+            description="Includes exclusive speaker meetups & front-row seating"
+            price="699"
+            delay={0.4}
+          />
         </div>
       </div>
     </div>

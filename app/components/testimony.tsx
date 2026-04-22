@@ -2,7 +2,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
-import { motion, AnimatePresence, useAnimation, useInView } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useAnimation,
+  useInView,
+  Variants,
+} from "framer-motion";
 
 interface Testimonial {
   id: number;
@@ -16,35 +22,40 @@ const TestimonialCarousel: React.FC = () => {
   const testimonials = [
     {
       id: 1,
-      quote: "This summit opened my eyes to the future of AI and how it will shape industries.",
+      quote:
+        "This summit opened my eyes to the future of AI and how it will shape industries.",
       name: "Mark Vandenberg",
       title: "CTO, NeuralTech",
       heading: "GAME-CHANGING INSIGHTS",
     },
     {
       id: 2,
-      quote: "Incredible speakers, top-tier networking, and cutting-edge discussions all in one place.",
+      quote:
+        "Incredible speakers, top-tier networking, and cutting-edge discussions all in one place.",
       name: "Elena Rojas",
       title: "AI Researcher, DeepMind",
       heading: "THE BEST AI EVENT!",
     },
     {
       id: 3,
-      quote: "From hands-on workshops to visionary talks this summit is a must-attend for AI professionals.",
+      quote:
+        "From hands-on workshops to visionary talks this summit is a must-attend for AI professionals.",
       name: "David Laurent",
       title: "CEO, Futures/Labs",
       heading: "UNMATCHED OPPORTUNITIES",
     },
     {
       id: 4,
-      quote: "Innovative perspectives on AI implementation across various sectors.",
+      quote:
+        "Innovative perspectives on AI implementation across various sectors.",
       name: "Sarah Chen",
       title: "VP Innovation, TechFuture",
       heading: "TRANSFORMATIVE EXPERIENCE",
     },
     {
       id: 5,
-      quote: "The connections made at this summit have been invaluable to our research progress.",
+      quote:
+        "The connections made at this summit have been invaluable to our research progress.",
       name: "Michael Rodriguez",
       title: "Lead Developer, AI Solutions",
       heading: "POWERFUL NETWORKING",
@@ -61,12 +72,16 @@ const TestimonialCarousel: React.FC = () => {
 
   const handlePrevious = () => {
     setDirection(-1);
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1,
+    );
   };
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentIndex((prevIndex) => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1,
+    );
   };
 
   const getWrappedIndex = (index: number) => {
@@ -79,89 +94,89 @@ const TestimonialCarousel: React.FC = () => {
   const nextIndex = getWrappedIndex(currentIndex + 1);
 
   // Animation variants
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.8,
-        ease: "easeOut" 
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
-  const buttonVariants = {
+  const buttonVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
+      transition: {
         duration: 0.5,
-        delay: 0.4
-      }
+        delay: 0.4,
+      },
     },
     hover: {
       scale: 1.1,
       backgroundColor: "#FFFFFF",
       color: "#0147FF",
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
-        duration: 0.5, 
-        delay: 0.2
-      }
+      transition: {
+        duration: 0.5,
+        delay: 0.2,
+      },
     },
     exit: (direction: number) => ({
       opacity: 0,
       x: direction * 100,
-      transition: { duration: 0.3 }
-    })
+      transition: { duration: 0.3 },
+    }),
   };
 
   // Desktop card variants
-  const leftCardVariants = {
+  const leftCardVariants: Variants = {
     hidden: { opacity: 0, x: -100 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
-      transition: { 
-        duration: 0.7,
-        ease: "easeOut" 
-      }
-    }
-  };
-
-  const centerCardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
+      transition: {
         duration: 0.7,
         ease: "easeOut",
-        delay: 0.2
-      }
-    }
+      },
+    },
   };
 
-  const rightCardVariants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { 
+  const centerCardVariants: Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
         duration: 0.7,
-        ease: "easeOut" 
-      }
-    }
+        ease: "easeOut",
+        delay: 0.2,
+      },
+    },
+  };
+
+  const rightCardVariants: Variants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut",
+      },
+    },
   };
 
   // Trigger animations whenever component comes into view
@@ -174,21 +189,21 @@ const TestimonialCarousel: React.FC = () => {
   }, [isInView, controls]);
 
   // Arrow animation
-  const arrowIconVariants = {
+  const arrowIconVariants: Variants = {
     hover: (direction: number) => ({
       x: direction * 5,
-      transition: { duration: 0.2, repeat: Infinity, repeatType: "reverse" }
-    })
+      transition: { duration: 0.2, repeat: Infinity, repeatType: "reverse" },
+    }),
   };
 
   return (
-    <motion.div 
+    <motion.div
       ref={containerRef}
       className="bg-black text-white py-8 md:py-16 max-w-4xl md:max-w-6xl mx-auto px-4 md:px-0"
       initial="hidden"
       animate={controls}
     >
-      <motion.div 
+      <motion.div
         className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4 md:gap-0"
         variants={headerVariants}
       >
@@ -233,7 +248,7 @@ const TestimonialCarousel: React.FC = () => {
       <div className="relative flex flex-col md:flex-row gap-4 md:gap-0">
         {/* Mobile: Single Card View */}
         <AnimatePresence mode="wait" custom={direction}>
-          <motion.div 
+          <motion.div
             key={currentIndex}
             className="md:hidden w-full bg-[#0147FF] rounded-[30px] md:rounded-[50px] p-6 md:py-18 md:px-15 flex flex-col justify-between h-[350px] md:h-[443px] shadow-xl"
             custom={direction}
@@ -243,7 +258,7 @@ const TestimonialCarousel: React.FC = () => {
             exit="exit"
           >
             <div>
-              <motion.h2 
+              <motion.h2
                 className="font-syne font-bold text-xl md:text-2xl lg:text-[30px] leading-[30px] tracking-normal uppercase"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -251,7 +266,7 @@ const TestimonialCarousel: React.FC = () => {
               >
                 {testimonials[currentIndex].heading}
               </motion.h2>
-              <motion.p 
+              <motion.p
                 className="font-syne font-normal text-base md:text-lg lg:text-[20px] leading-[30px] tracking-normal my-6 md:my-12"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -260,7 +275,7 @@ const TestimonialCarousel: React.FC = () => {
                 &quot;{testimonials[currentIndex].quote}&quot;
               </motion.p>
             </div>
-            <motion.div 
+            <motion.div
               className="flex items-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -288,7 +303,7 @@ const TestimonialCarousel: React.FC = () => {
         </AnimatePresence>
 
         {/* Desktop: Three Card View */}
-        <motion.div 
+        <motion.div
           className="hidden md:block absolute z-10 w-full md:w-[33%] bg-gradient-to-r from-transparent via-[rgba(26, 26, 26, 0.538)] to-[#1A1A1A] rounded-[50px] py-18 px-15 flex flex-col justify-between h-[443px]"
           variants={leftCardVariants}
         >
@@ -322,13 +337,13 @@ const TestimonialCarousel: React.FC = () => {
         </motion.div>
 
         <AnimatePresence mode="wait">
-          <motion.div 
+          <motion.div
             key={currentIndex}
             className="hidden relative z-30 w-full md:w-[35%] md:ml-[30%] bg-[#0147FF] rounded-[50px] py-18 px-15 md:flex flex-col justify-between h-[443px] shadow-xl"
             variants={centerCardVariants}
           >
             <div>
-              <motion.h2 
+              <motion.h2
                 className="font-syne font-bold text-[30px] leading-[30px] tracking-normal uppercase"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -336,7 +351,7 @@ const TestimonialCarousel: React.FC = () => {
               >
                 {testimonials[currentIndex].heading}
               </motion.h2>
-              <motion.p 
+              <motion.p
                 className="font-syne font-normal text-[20px] leading-[30px] tracking-normal my-12"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -345,7 +360,7 @@ const TestimonialCarousel: React.FC = () => {
                 &quot;{testimonials[currentIndex].quote}&quot;
               </motion.p>
             </div>
-            <motion.div 
+            <motion.div
               className="flex items-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -372,7 +387,7 @@ const TestimonialCarousel: React.FC = () => {
           </motion.div>
         </AnimatePresence>
 
-        <motion.div 
+        <motion.div
           className="hidden absolute z-20 w-full md:w-[33%] md:right-0 bg-[#DEDEE0] text-black rounded-[50px] py-18 px-15 md:flex flex-col justify-between h-[443px]"
           variants={rightCardVariants}
         >
